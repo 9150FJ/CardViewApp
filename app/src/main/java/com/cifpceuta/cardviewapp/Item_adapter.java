@@ -1,5 +1,6 @@
 package com.cifpceuta.cardviewapp;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class Item_adapter extends RecyclerView.Adapter<Item_adapter.ViewHolder> {
     ArrayList<String> list_item;
+    CardView cardView;
 
     int ordem=0;
 
@@ -21,7 +24,18 @@ public class Item_adapter extends RecyclerView.Adapter<Item_adapter.ViewHolder> 
     public Item_adapter(){}
     public Item_adapter(ArrayList<String> list_item) {
         this.list_item=list_item;
+
+
     }
+
+
+    public void setFilterList(ArrayList<String> listaFiltrada){
+        list_item = listaFiltrada;
+        notifyDataSetChanged();
+    }
+
+
+
 
     @NonNull
     @Override
@@ -33,6 +47,7 @@ public class Item_adapter extends RecyclerView.Adapter<Item_adapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull Item_adapter.ViewHolder holder, int position) {
         holder.bindData(list_item.get(position));
+
     }
 
     @Override
@@ -44,13 +59,16 @@ public class Item_adapter extends RecyclerView.Adapter<Item_adapter.ViewHolder> 
         TextView tvItem;
         Button btnBorrar;
 
-        private Item_adapter adapter;
+
+
+       private Item_adapter adapter;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
 
             tvItem=itemView.findViewById(R.id.tvItem); //Crear textview
             btnBorrar = itemView.findViewById(R.id.btnBorrar); //Crear boton en xml
+            cardView = itemView.findViewById(R.id.general); //Crear estructura general
 
             btnBorrar.setOnClickListener(view -> {
                 String texto_item = list_item.get(getAdapterPosition());
@@ -66,7 +84,11 @@ public class Item_adapter extends RecyclerView.Adapter<Item_adapter.ViewHolder> 
        void bindData(final String item){
            tvItem.setText(item);
        }
+
+
+
    }
+
 
 }
 

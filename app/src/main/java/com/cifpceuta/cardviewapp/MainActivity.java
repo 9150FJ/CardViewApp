@@ -3,6 +3,7 @@ package com.cifpceuta.cardviewapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,11 +25,28 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Toolbar toolbar;
     Item_adapter adapter;
+    SearchView barraBusqueda;
     boolean flag;
+
+    boolean flag2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        barraBusqueda=(SearchView) findViewById(R.id.svBusqueda);
+        barraBusqueda.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtrado(newText);
+                return false;
+            }
+        });
+
         elementos.add("Palabra");
         elementos.add("Texto");
         elementos.add("Alfombra");
@@ -74,6 +93,31 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //boolean flag;
         int id=item.getItemId();
+
+        if (id==R.id.par){
+            for (int i=0;i<recyclerView.getItemDecorationCount();i++){
+                if (i%2==0){
+                    //recyclerView.set
+                }
+            }
+        }
+
+
+        
+        if (id==R.id.opcion4){
+            if (!flag2){
+                recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+                flag2=true;
+            }else{
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                flag2=false;
+            }
+            
+        }
+
+
+
+
         if (id==R.id.opcion1){
             Toast.makeText(this, "Mensaje", Toast.LENGTH_SHORT).show();  //ASCENDENTE
             elementos.sort((o1, o2) -> o2.compareTo(o1));
@@ -111,4 +155,41 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    public void filtrado(String texto){
+        ArrayList<String> listaFiltrar = new ArrayList<>();
+        for (int i=0;i<elementos.size();i++){
+            if (elementos.get(i).toLowerCase().contains(texto.toLowerCase())){
+                listaFiltrar.add(elementos.get(i));
+            }
+
+        }
+        adapter.setFilterList(listaFiltrar);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public void filtrado2(String texto){
+        ArrayList<String> listaFiltrar = new ArrayList<>();
+        for (String item : elementos){
+            if (item.toLowerCase().contains(texto.toLowerCase())){
+                listaFiltrar.add(item);
+            }
+        }
+        adapter.set
+    }*/
 }
